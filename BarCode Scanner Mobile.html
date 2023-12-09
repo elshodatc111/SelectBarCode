@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="you-qr-result"></div>
+    <h1>scan qr html</h1>
+    <div style="display:flex;justify-content: center;">
+        <div id="my-qr-reader" style="width:500px">
+
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        function demReady(fn){
+            if(document.readyState === 'complete' || document.readyState === "interactive"){
+                setTimeout(fn,1)
+            }else{
+                document.addEventListener("DOMContentLoaded",fn)
+            }
+        }
+
+        demReady(function(){
+            var myqr = document.getElementById('my-qr-reader');
+            var lastResult,conuntResults = 0;
+
+            function onScanSuccess(decodeText,dexodeResult){
+                if(decodeText !== lastResult){
+                    ++conuntResults;
+                    lastResult = decodeText;
+
+                    document.getElementById('mycode').inputMode.valueOf=decodeText;
+                    alert("You Qr is : "+decodeText,dexodeResult)
+
+                    myqr.innerHTML = `You scab ${conuntResults} : ${decodeText}`
+                }
+            }
+
+            var htmlscanner = new Html5QrcodeScanner(
+                'my-qr-reader',{fps:10,qrbox:250})
+
+            htmlscanner.render(onScanSuccess)
+        })
+    </script>
+
+    <input type="text" id="mycode">
+</body>
+</html>
